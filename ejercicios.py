@@ -501,38 +501,59 @@ class AgrupadorEdades:
 
 
 
-# EJERCICIO 18: Matriz de distancias
-
-# Entender el problema (E · P · S):
-#   - Entrada: Tuplas (x, y) como puntos 2D.
-#   - Proceso: Calcular distancia euclidiana con fórmula matemática, comparar.
-#   - Salida: Distancia numérica, punto más cercano.
-#
-# Bosquejo a mano:
-#   - Distancia entre (0,0) y (3,4) -> raíz de (3^2 + 4^2) = 5.0.
-
+#Ejercicio 18 - Matriz de distancias
+#Entender el problema
+    #Entrada: Recibir dos puntos
+    #Proceso: Restar las coordenadas
+    #         Elevar al cuadrado
+    #         Sumar
+    #         Sacar la raíz cuadrada
+    #Salida: Mostrar la distancia
+#Bosquejar a mano
+    # punto1 = (0, 0)
+    # punto2 = (3, 4)
+    # diferencia x = 3 - 0 = 3
+    # diferencia y = 4 - 0 = 4
+    # 3^2 = 9
+    # 4^2 = 16
+    # 9 + 16 = 25
+    # raiz de 25 = 5
+#Descubrir el patrón
+    # Usamos la fórmula de distancia
+    # Calculamos la diferencia de cada coordenada
+    # Elevamos al cuadrado
+    # Sumamos y sacamos raiz
+#Escribir el código
 class CalculadorDistancia:
     def __init__(self):
-        self.distancias_calculadas = []
-
+        self.distancias = []
     def distancia_euclidiana(self, p1, p2):
-        dist = math.sqrt((p2[0] - p1[0])**2 + (p2[1] - p1[1])**2)
-        self.distancias_calculadas.append(dist)
-        return dist
-
+        x1 = p1[0]
+        y1 = p1[1]
+        x2 = p2[0]
+        y2 = p2[1]
+        diferencia_x = x2 - x1
+        diferencia_y = y2 - y1
+        resultado = (diferencia_x ** 2) + (diferencia_y ** 2)
+        distancia = resultado ** 0.5
+        self.distancias.append(distancia)
+        return distancia
     def punto_mas_cercano(self, referencia, *puntos):
         if not puntos:
             return None
-        mas_cercano = puntos[0]
-        min_dist = self.distancia_euclidiana(referencia, mas_cercano)
-        for p in puntos[1:]:
-            d = self.distancia_euclidiana(referencia, p)
-            if d < min_dist:
-                min_dist = d
-                mas_cercano = p
-        return mas_cercano
-
-
+        punto_cercano = None
+        menor_distancia = float('inf')   
+        for punto in puntos:
+            dist = self.distancia_euclidiana(referencia, punto)
+            if dist < menor_distancia:
+                menor_distancia = dist
+                punto_cercano = punto
+        return punto_cercano
+calculador = CalculadorDistancia()
+p1 = (0, 0)
+p2 = (3, 4)
+distancia = calculador.distancia_euclidiana(p1, p2)
+print(f"La distancia es: {distancia}")
 
 # EJERCICIO 19: Inventario de productos
 
@@ -562,30 +583,51 @@ class Inventario:
 
 
 
-# EJERCICIO 20: Analizador de patrones en textos
-
-# Entender el problema (E · P · S):
-#   - Entrada: Texto y patrón de búsqueda.
-#   - Proceso: split(), filtrar con startswith(), agrupar por longitud, conjunto único.
-#   - Salida: Listas, diccionarios, conjuntos.
-#
-# Bosquejo a mano:
-#   - "el gato está aquí" -> {2:['el'], 4:['gato'], 5:['está','aquí']}.
-
+#Ejercicio 20 - Analizador de patrones en textos
+#Entender el problema
+    #Entrada: Recibir un texto con varias palabras
+    #Proceso: Buscar palabras que comiencen con ciertas letras
+    #         Agrupar palabras según su longitud
+    #         Eliminar palabras repetidas
+    #Salida: Mostrar los resultados
+#Bosquejar a mano
+    # texto = "el gato esta aqui"
+    # palabras = ["el", "gato", "esta", "aqui"]
+    # palabras que empiezan con e
+    # longitud de el = 2
+    # longitud de esta = 4
+    # palabra casa repetida -> se elimina
+#Descubrir el patrón
+    # Usamos split() para separar las palabras
+    # Usamos startswith() para revisar cómo comienza una palabra
+    # Usamos len() para conocer su longitud
+    # Usamos set() para eliminar repetidos
+#Escribir el código
 class AnalizadorPatrones:
+    def __init__(self):
+        pass
     def encontrar_palabras(self, texto, patron):
+        resultado = []
         palabras = texto.split()
-        return [p for p in palabras if p.startswith(patron)]
-
+        for palabra in palabras:
+            if palabra.startswith(patron):
+                resultado.append(palabra)
+        return resultado
     def agrupar_por_longitud(self, texto):
-        palabras = texto.split()
         grupos = {}
-        for p in palabras:
-            length = len(p)
-            if length not in grupos:
-                grupos[length] = []
-            grupos[length].append(p)
+        palabras = texto.split()
+        for palabra in palabras:
+            longitud = len(palabra)
+            if longitud not in grupos:
+                grupos[longitud] = []
+            grupos[longitud].append(palabra)
         return grupos
-
     def palabras_unicas(self, texto):
-        return set(texto.split())
+        resultado = set()
+        palabras = texto.split()
+        for palabra in palabras:
+            resultado.add(palabra)
+        return resultado
+ap = AnalizadorPatrones()
+resultado = ap.agrupar_por_longitud("el gato está aquí")
+print(resultado)
